@@ -48,4 +48,5 @@ command: |
     --load-format fastsafetensors \
     --reasoning-parser qwen3 \
     --tool-call-parser qwen3_xml \
-    --enable-auto-tool-choice
+    --enable-auto-tool-choice \
+    --chat-template fixed_chat_template.jinja
