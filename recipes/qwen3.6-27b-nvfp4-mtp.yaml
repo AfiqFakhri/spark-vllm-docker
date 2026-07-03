@@ -1,0 +1,48 @@
+# Recipe: Qwen3.6-27B-NVFP4-MTP
+# Qwen3.6-27B-NVFP4 model in NVIDIA NVFP4 format. Changed to single DGX Spark also added a fix for the Qwen3.6 chat template to v20. This recipe is intended for use with vLLM serving.
+
+recipe_version: "1"
+name: nvidia/Qwen3.6-27B-NVFP4-MTP
+description: vLLM serving nvidia/Qwen3.6-27B-NVFP4 with Marlin MoE backend and no MTP
+
+# HuggingFace model to download (optional, for --download-model)
+model: nvidia/Qwen3.6-27B-NVFP4
+
+# Container image to use
+container: vllm-node
+
+mods:
+  - mods/fix-qwen3.6-chat-template-v20
+
+# Default settings (can be overridden via CLI)
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.4
+  max_model_len: 128000
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+
+# The vLLM serve command template
+command: |
+  vllm serve nvidia/Qwen3.6-27B-NVFP4 \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --trust-remote-code \
+    --kv-cache-dtype fp8 \
+    --attention-backend flashinfer \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":3}'
+    --enable-chunked-prefill \
+    --async-scheduling \
+    --enable-prefix-caching \
+    --load-format fastsafetensors \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --chat-template fixed_chat_template.jinja
