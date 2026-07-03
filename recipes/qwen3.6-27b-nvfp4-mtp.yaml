@@ -3,7 +3,7 @@
 
 recipe_version: "1"
 name: nvidia/Qwen3.6-27B-NVFP4-MTP
-description: vLLM serving nvidia/Qwen3.6-27B-NVFP4 with Marlin MoE backend and no MTP
+description: vLLM serving nvidia/Qwen3.6-27B-NVFP4
 
 # HuggingFace model to download (optional, for --download-model)
 model: nvidia/Qwen3.6-27B-NVFP4
@@ -37,7 +37,7 @@ command: |
     --max-model-len {max_model_len} \
     --max-num-seqs {max_num_seqs} \
     --max-num-batched-tokens {max_num_batched_tokens} \
-    --speculative-config '{"method":"mtp","num_speculative_tokens":3}'
+    --speculative-config '{{"method":"mtp","num_speculative_tokens":3}}'
     --enable-chunked-prefill \
     --async-scheduling \
     --enable-prefix-caching \
