@@ -37,7 +37,7 @@ command: |
     --max-model-len {max_model_len} \
     --max-num-seqs {max_num_seqs} \
     --max-num-batched-tokens {max_num_batched_tokens} \
-    --speculative-config '{{"method":"mtp","num_speculative_tokens":3}}'
+    --speculative-config '{{"method":"mtp","num_speculative_tokens":3}}' \
     --enable-chunked-prefill \
     --async-scheduling \
     --enable-prefix-caching \
